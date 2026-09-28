@@ -41,6 +41,7 @@ if [[ ! -d "$app_path/Contents/Resources/Cida_Cida.bundle" ]]; then
 fi
 
 /usr/bin/codesign --verify --deep --strict "$app_path"
+"$script_dir/../verify-app-architectures.sh" "$app_path"
 expected_bundle_identifier=$(
   /usr/bin/plutil -extract bundleIdentifier raw "$manifest_path"
 )

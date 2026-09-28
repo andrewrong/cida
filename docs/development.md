@@ -13,6 +13,8 @@ swift test
 
 `scripts/build-app.sh release` builds the Release app bundle at `build/Cida.app` without launching it. It signs with the first Developer ID Application identity in your keychain (or `CIDA_CODESIGN_IDENTITY`), because the Keychain item that holds the API key is bound to a stable signature. `CIDA_VERSION` and `CIDA_BUILD_NUMBER` set the bundle version; without them it keeps the one in `Resources/Cida-Info.plist`.
 
+Release apps are universal binaries for Intel (`x86_64`) and Apple silicon (`arm64`), both requiring macOS 15 or newer. Production packaging and the release gates use `scripts/build-universal-app.sh <new app path> [configuration]`: it builds each architecture separately, assembles the resource bundle and framework, then merges the executable before signing. `scripts/verify-app-architectures.sh <app>` rejects any packaged Mach-O file missing either architecture, including Sparkle's helper programs. CI builds the unsigned universal app as well as running the native Swift tests. Universal packaging can run on either CPU; an Intel build still needs runtime validation on Intel hardware. Building only with `swift build` remains useful for native development but does not produce a distributable universal app.
+
 To hand the app to another Mac, notarize it:
 
 ```sh

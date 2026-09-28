@@ -23,16 +23,7 @@ app_path="$staging_root/Cida.app"
 manifest_plist="$staging_root/artifact-manifest.plist"
 manifest_path="$staging_root/artifact-manifest.json"
 
-swift build \
-  --package-path "$project_dir" \
-  --configuration release \
-  -Xswiftc -warnings-as-errors
-bin_path=$(swift build \
-  --package-path "$project_dir" \
-  --configuration release \
-  --show-bin-path)
-
-"$project_dir/scripts/assemble-app.sh" "$bin_path/Cida" "$app_path"
+"$project_dir/scripts/build-universal-app.sh" "$app_path" release
 /usr/bin/xattr -cr "$app_path"
 
 signing_identity=${CIDA_CODESIGN_IDENTITY:-}

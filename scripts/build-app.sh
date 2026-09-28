@@ -43,17 +43,7 @@ staging_root=$(mktemp -d "$output_dir/.cida-production-build.XXXXXX")
 trap '/bin/rm -r "$staging_root"' EXIT
 staging_app="$staging_root/Cida.app"
 
-swift build \
-  --package-path "$project_dir" \
-  --configuration "$configuration" \
-  -Xswiftc -warnings-as-errors
-
-bin_path=$(swift build \
-  --package-path "$project_dir" \
-  --configuration "$configuration" \
-  --show-bin-path)
-
-"$script_dir/assemble-app.sh" "$bin_path/Cida" "$staging_app"
+"$script_dir/build-universal-app.sh" "$staging_app" "$configuration"
 if [[ -n "${CIDA_VERSION:-}" ]]; then
   /usr/bin/plutil -replace CFBundleShortVersionString -string "$CIDA_VERSION" \
     "$staging_app/Contents/Info.plist"

@@ -31,3 +31,9 @@ jobs:
 
       - name: Test
         run: swift test
+
+      - name: Test universal app validation
+        run: python3 -m unittest discover -s scripts/e2e/tests -p test_universal_app.py
+
+      - name: Build the universal app
+        run: scripts/build-universal-app.sh "$RUNNER_TEMP/Cida.app" release
